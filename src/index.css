@@ -1,40 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* ══════════════════════════════════════════════════════════════
-   PrintIA — Light Premium 2.0
-   Sora (display + UI) — unified, geometric, modern
-   Petroleum Blue × Warm Ivory × Ember Orange
+   PrintIA — Premium 2.0
+   Single font: Sora — geometric, modern, unified across all text
 ══════════════════════════════════════════════════════════════ */
 
 @layer base {
   :root {
     --primary:             213 62% 14%;
     --primary-foreground:  0 0% 100%;
-
     --background:          40 20% 98%;
     --foreground:          213 25% 12%;
-
     --card:                0 0% 100%;
     --card-foreground:     213 25% 12%;
     --popover:             0 0% 100%;
     --popover-foreground:  213 25% 12%;
-
     --secondary:           213 18% 95%;
     --secondary-foreground:213 25% 12%;
-
     --muted:               213 15% 93%;
     --muted-foreground:    213 12% 48%;
-
     --accent:              20 92% 52%;
     --accent-foreground:   0 0% 100%;
-
     --destructive:         0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-
     --border:              213 18% 88%;
     --input:               213 18% 88%;
     --ring:                20 92% 52%;
@@ -49,17 +41,12 @@
     --sidebar-border:      213 40% 22%;
     --sidebar-ring:        20 92% 52%;
 
-    --shadow-xs:    0 1px 2px 0 hsl(213 62% 14% / 0.04);
-    --shadow-sm:    0 2px 6px 0 hsl(213 62% 14% / 0.07);
-    --shadow-md:    0 4px 14px -2px hsl(213 62% 14% / 0.09),
-                    0 2px 4px -1px hsl(213 62% 14% / 0.06);
-    --shadow-lg:    0 12px 28px -4px hsl(213 62% 14% / 0.11),
-                    0 4px 8px -2px hsl(213 62% 14% / 0.07);
-    --shadow-card-hover:
-                    0 18px 40px -6px hsl(213 62% 14% / 0.14),
-                    0 6px 12px -3px hsl(213 62% 14% / 0.08);
-    --shadow-accent:
-                    0 8px 32px 0 hsl(20 92% 52% / 0.38);
+    --shadow-xs:         0 1px 2px 0 hsl(213 62% 14% / 0.04);
+    --shadow-sm:         0 2px 6px 0 hsl(213 62% 14% / 0.07);
+    --shadow-md:         0 4px 14px -2px hsl(213 62% 14% / 0.09), 0 2px 4px -1px hsl(213 62% 14% / 0.06);
+    --shadow-lg:         0 12px 28px -4px hsl(213 62% 14% / 0.11), 0 4px 8px -2px hsl(213 62% 14% / 0.07);
+    --shadow-card-hover: 0 18px 40px -6px hsl(213 62% 14% / 0.14), 0 6px 12px -3px hsl(213 62% 14% / 0.08);
+    --shadow-accent:     0 8px 32px 0 hsl(20 92% 52% / 0.38);
   }
 
   .dark {
@@ -85,7 +72,7 @@
   }
 }
 
-/* ── Base ────────────────────────────────────── */
+/* ── Base resets ─────────────────────────────── */
 @layer base {
   * { @apply border-border; }
 
@@ -96,25 +83,33 @@
     text-rendering: optimizeLegibility;
   }
 
+  /*
+    KEY FIX: Override Tailwind's default font-sans with Sora on body.
+    Using !important to beat Tailwind base layer specificity.
+    This ensures Sora applies to ALL text, including elements
+    that inherit Tailwind's default sans stack.
+  */
   body {
+    font-family: 'Sora', ui-sans-serif, system-ui, sans-serif !important;
     @apply bg-background text-foreground;
-    /* Sora for everything — unified, no serif clash */
-    font-family: 'Sora', system-ui, sans-serif;
     font-size: 16px;
     line-height: 1.625;
     font-weight: 400;
   }
 
-  /* Headings: Sora Bold/ExtraBold — tight, impactful */
+  /*
+    Override Tailwind's heading defaults.
+    No serif. No Instrument. Just Sora Bold — consistent with body.
+  */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Sora', system-ui, sans-serif;
+    font-family: 'Sora', ui-sans-serif, system-ui, sans-serif !important;
     font-weight: 700;
-    line-height: 1.12;
+    line-height: 1.1;
     letter-spacing: -0.025em;
   }
 
   ::selection {
-    background: hsl(20 92% 52% / 0.16);
+    background: hsl(20 92% 52% / 0.18);
     color: hsl(213 62% 14%);
   }
 
@@ -126,13 +121,8 @@
 
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb {
-    background: hsl(var(--border));
-    border-radius: 99px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--muted-foreground) / 0.5);
-  }
+  ::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground) / 0.5); }
 }
 
 #root {
@@ -144,20 +134,23 @@
 
 /* ── Utilities ───────────────────────────────── */
 @layer utilities {
-  /* font-display is now Sora (same font, just alias kept for compatibility) */
+  /*
+    .font-display and .font-sans now both point to Sora.
+    Components that use these classes will always get Sora.
+  */
   .font-display {
-    font-family: 'Sora', system-ui, sans-serif;
+    font-family: 'Sora', ui-sans-serif, system-ui, sans-serif !important;
     font-weight: 700;
     letter-spacing: -0.025em;
   }
 
   .font-sans {
-    font-family: 'Sora', system-ui, sans-serif;
+    font-family: 'Sora', ui-sans-serif, system-ui, sans-serif !important;
   }
 
   .text-balance { text-wrap: balance; }
 
-  /* Eyebrow accent prefix line */
+  /* Eyebrow prefix line */
   .accent-line {
     display: inline-flex;
     align-items: center;
@@ -175,7 +168,7 @@
 }
 
 /* ══════════════════════════════════════════════
-   SCROLL REVEAL SYSTEM
+   SCROLL REVEAL
 ══════════════════════════════════════════════ */
 [data-reveal-child] {
   opacity: 0;
@@ -184,7 +177,6 @@
     opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 [data-reveal-child].is-visible {
   opacity: 1;
   transform: translateY(0);
@@ -193,35 +185,29 @@
 /* ══════════════════════════════════════════════
    HERO ENTRANCE ANIMATIONS
 ══════════════════════════════════════════════ */
-.hero-eyebrow { animation: heroFadeDown 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.1s  both; }
-.hero-title   { animation: heroFadeUp   0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both; }
-.hero-sub     { animation: heroFadeUp   0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.38s both; }
-.hero-cta     { animation: heroFadeUp   0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.52s both; }
-.hero-stats   { animation: heroFadeUp   0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.66s both; }
+.hero-eyebrow { animation: heroDown 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.1s  both; }
+.hero-title   { animation: heroUp   0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both; }
+.hero-sub     { animation: heroUp   0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.38s both; }
+.hero-cta     { animation: heroUp   0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.52s both; }
+.hero-stats   { animation: heroUp   0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.66s both; }
 
-@keyframes heroFadeDown {
-  from { opacity: 0; transform: translateY(-12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes heroFadeUp {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+@keyframes heroDown { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:translateY(0)} }
+@keyframes heroUp   { from{opacity:0;transform:translateY(18px)}  to{opacity:1;transform:translateY(0)} }
 
-/* Legacy classes */
+/* Legacy */
 @layer utilities {
-  .animate-fade-in          { animation: fadeIn   0.7s cubic-bezier(0.16,1,0.3,1) forwards; }
-  .animate-fade-in-up       { animation: fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) forwards; }
-  .animate-fade-in-delayed  { animation: fadeIn   0.7s cubic-bezier(0.16,1,0.3,1) 0.25s forwards; opacity: 0; }
-  .animate-fade-in-delayed-2{ animation: fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.45s forwards; opacity: 0; }
-  .animate-slide-in-right   { animation: slideInRight 0.7s cubic-bezier(0.16,1,0.3,1) forwards; }
+  .animate-fade-in           { animation: fadeIn   0.7s cubic-bezier(0.16,1,0.3,1) forwards; }
+  .animate-fade-in-up        { animation: fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) forwards; }
+  .animate-fade-in-delayed   { animation: fadeIn   0.7s cubic-bezier(0.16,1,0.3,1) 0.25s forwards; opacity:0; }
+  .animate-fade-in-delayed-2 { animation: fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.45s forwards; opacity:0; }
+  .animate-slide-in-right    { animation: slideIn  0.7s cubic-bezier(0.16,1,0.3,1) forwards; }
 }
-@keyframes fadeIn       { from{opacity:0}    to{opacity:1} }
-@keyframes fadeInUp     { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
-@keyframes slideInRight { from{opacity:0;transform:translateX(-18px)} to{opacity:1;transform:translateX(0)} }
+@keyframes fadeIn   { from{opacity:0} to{opacity:1} }
+@keyframes fadeInUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+@keyframes slideIn  { from{opacity:0;transform:translateX(-18px)} to{opacity:1;transform:translateX(0)} }
 
 /* ══════════════════════════════════════════════
-   CARD INTERACTIONS (CSS-only, no JS re-renders)
+   CARD HOVER STATES
 ══════════════════════════════════════════════ */
 .value-card {
   box-shadow: var(--shadow-sm);
@@ -253,10 +239,7 @@
   box-shadow: var(--shadow-xs);
   transition: box-shadow 0.22s ease, transform 0.22s ease;
 }
-.process-step-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
+.process-step-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
 
 .sector-card {
   box-shadow: var(--shadow-xs);
@@ -272,17 +255,9 @@
 
 /* ── Reduced motion ──────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  [data-reveal-child] {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
+  [data-reveal-child] { opacity:1 !important; transform:none !important; transition:none !important; }
   .hero-eyebrow, .hero-title, .hero-sub, .hero-cta, .hero-stats {
-    animation: none !important;
-    opacity: 1 !important;
+    animation: none !important; opacity: 1 !important;
   }
-  * {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
