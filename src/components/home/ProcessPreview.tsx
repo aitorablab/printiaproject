@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Section, SectionHeader } from "@/components/ui/Section";
 import { ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useScrollReveal } from "@/hooks/useScrollEffects";
 
 const steps = [
   {
@@ -27,65 +27,89 @@ const steps = [
 ];
 
 export function ProcessPreview() {
+  const headerRef = useScrollReveal(0.1);
+  const stepsRef = useScrollReveal(0.05);
+
   return (
-    <Section variant="default" size="lg">
-      <SectionHeader
-        subtitle="Cómo trabajamos"
-        title="Un proceso diseñado para ti"
-        description="De principio a fin, te acompañamos en cada fase del proyecto."
-      />
+    <Section variant="secondary" size="lg">
+      <div ref={headerRef as React.RefObject<HTMLDivElement>} className="reveal-container">
+        <div data-reveal-child>
+          <SectionHeader
+            subtitle="Cómo trabajamos"
+            title="Un proceso diseñado para ti"
+            description="De principio a fin, te acompañamos en cada fase del proyecto."
+            italic
+          />
+        </div>
+      </div>
 
       <div className="relative">
-        {/* ── Línea conectora desktop ── */}
+        {/* Dashed connector line — desktop only */}
         <div
-          className="hidden lg:block absolute top-7 left-0 right-0 h-px"
+          className="hidden lg:block absolute z-0"
           style={{
-            background:
-              "linear-gradient(to right, transparent 4%, hsl(var(--border)) 4%, hsl(var(--border)) 96%, transparent 96%)",
+            top: "1.5rem",
+            left: "calc(12.5% + 24px)",
+            right: "calc(12.5% + 24px)",
+            height: "1px",
+            background: "repeating-linear-gradient(90deg, hsl(213 18% 82%) 0px, hsl(213 18% 82%) 6px, transparent 6px, transparent 16px)",
           }}
         />
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {steps.map((step, index) => (
-            <div
-              key={index}
-              className={cn(
-                "group relative bg-card rounded-2xl p-6 border border-border",
-                "transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-1 hover:border-accent/20"
-              )}
-            >
-              {/* Número — posicionado en el top como chip */}
-              <div className="relative z-10 w-14 h-14 rounded-2xl bg-primary flex items-center justify-center mb-5 shadow-primary group-hover:bg-accent group-hover:shadow-accent transition-all duration-300">
-                <span className="font-display font-bold text-base text-primary-foreground leading-none">
+        <div
+          ref={stepsRef as React.RefObject<HTMLDivElement>}
+          className="reveal-container grid sm:grid-cols-2 lg:grid-cols-4 gap-5 relative z-10"
+        >
+          {steps.map((step, i) => (
+            <div key={i} data-reveal-child className="flex flex-col">
+              {/* Number bubble */}
+              <div
+                className="relative w-12 h-12 rounded-full flex items-center justify-center mb-5"
+                style={{
+                  background: "hsl(var(--primary))",
+                  boxShadow: "var(--shadow-md)",
+                  outline: "4px solid hsl(var(--secondary))",
+                }}
+              >
+                <span className="font-sans font-bold text-white text-xs tracking-wide">
                   {step.number}
                 </span>
+                {/* Accent dot on first step */}
+                {i === 0 && (
+                  <span
+                    className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full"
+                    style={{
+                      background: "hsl(var(--accent))",
+                      boxShadow: "0 0 8px hsl(20 92% 52% / 0.6)",
+                      outline: "2px solid hsl(var(--secondary))",
+                    }}
+                  />
+                )}
               </div>
 
-              <h3 className="font-display font-semibold text-base mb-2 group-hover:text-accent transition-colors duration-200">
-                {step.title}
-              </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                {step.description}
-              </p>
-
-              {/* Flecha entre steps (desktop) */}
-              {index < steps.length - 1 && (
-                <div className="hidden lg:flex absolute -right-3 top-7 w-6 h-6 items-center justify-center z-20 bg-background rounded-full border border-border">
-                  <ArrowRight className="w-3 h-3 text-muted-foreground/60" />
-                </div>
-              )}
+              {/* Card */}
+              <div
+                className="flex-1 bg-[hsl(var(--card))] rounded-2xl p-6 border border-[hsl(var(--border))] process-step-card"
+              >
+                <h3 className="font-display text-lg mb-2 text-[hsl(var(--foreground))]">
+                  {step.title}
+                </h3>
+                <p className="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed font-sans">
+                  {step.description}
+                </p>
+              </div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="text-center mt-12">
+      <div className="text-center mt-10">
         <Link
           to="/proceso"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent/80 transition-colors group"
+          className="inline-flex items-center gap-2 text-sm font-sans font-semibold text-[hsl(var(--accent))] hover:text-[hsl(20_92%_40%)] transition-colors group"
         >
           Ver proceso completo
-          <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
         </Link>
       </div>
     </Section>
