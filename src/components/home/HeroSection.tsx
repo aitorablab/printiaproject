@@ -42,8 +42,9 @@ export function HeroSection() {
             top: "-15%",
             objectFit: "cover",
             objectPosition: "center",
-            transform: "translateY(var(--parallax-y, 0px))",
-            willChange: "transform",
+            transform: "translateY(var(--parallax-y, 0px)) scale(1.04)",
+            willChange: "transform, filter",
+            filter: "blur(3px) saturate(0.92) brightness(0.88)",
           }}
           loading="eager"
           decoding="async"
