@@ -62,9 +62,9 @@ export function HeroSection() {
           background: `linear-gradient(
             100deg,
             hsl(213 65% 7% / ${overlayMax})      0%,
-            hsl(213 62% 10% / ${overlayMax - 0.06}) 45%,
-            hsl(213 58% 14% / ${overlayMax - 0.20}) 75%,
-            hsl(213 55% 16% / ${overlayMax - 0.35}) 100%
+            hsl(213 62% 10% / ${overlayMax - 0.04}) 42%,
+            hsl(213 58% 14% / ${overlayMax - 0.12}) 72%,
+            hsl(213 55% 16% / ${overlayMax - 0.18}) 100%
           )`,
           pointerEvents: "none",
         }}
