@@ -1,38 +1,41 @@
-import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Package, Clock, Users, Factory } from "lucide-react";
 import heroImage from "@/assets/hero-printing.jpg";
 import { useParallax, useScrollProgress } from "@/hooks/useScrollEffects";
 
 const stats = [
-  { icon: Factory, label: "+25", unit: "años", sublabel: "de experiencia" },
+  { icon: Factory, label: "+25", unit: " años", sublabel: "de experiencia" },
   { icon: Package, label: "+10k", unit: "", sublabel: "proyectos entregados" },
-  { icon: Clock, label: "48h", unit: "", sublabel: "entrega express" },
+  { icon: Clock, label: "48h", sublabel: "entrega express" },
   { icon: Users, label: "+500", unit: "", sublabel: "clientes activos" },
 ];
 
 export function HeroSection() {
-  const imageRef = useParallax(0.28);
+  const imageRef = useParallax(0.25);
   const { ref: sectionRef, progress } = useScrollProgress();
 
-  const overlayOpacity = 0.55 + progress * 0.38;
-  const contentOpacity = 1 - progress * 1.8;
-  const contentY = progress * 60;
+  // Overlay darkens as you scroll — starts strong for readability
+  const baseOpacity = 0.72;
+  const overlayOpacity = Math.min(0.96, baseOpacity + progress * 0.28);
+
+  // Content fades and lifts on scroll
+  const contentOpacity = Math.max(0, 1 - progress * 1.9);
+  const contentY = progress * 55;
 
   return (
     <section
       ref={sectionRef as React.RefObject<HTMLElement>}
       className="relative h-screen min-h-[640px] max-h-[1080px] flex items-center overflow-hidden"
-      aria-label="Hero"
+      aria-label="Hero principal"
     >
-      {/* Parallax image */}
+      {/* ── Parallax image ── */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <img
           ref={imageRef as React.RefObject<HTMLImageElement>}
           src={heroImage}
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 w-full object-cover object-center"
+          className="absolute w-full object-cover object-center"
           style={{
             height: "130%",
             top: "-15%",
@@ -44,115 +47,183 @@ export function HeroSection() {
         />
       </div>
 
-      {/* Cinematic overlay — deepens on scroll */}
+      {/* ── Strong directional overlay — guarantees legibility ── */}
       <div
         className="absolute inset-0 z-10 pointer-events-none"
         style={{
-          background: `linear-gradient(
-            108deg,
-            hsl(213 62% 7% / ${Math.min(0.97, overlayOpacity + 0.28)}) 0%,
-            hsl(213 62% 12% / ${overlayOpacity}) 48%,
-            hsl(213 62% 16% / ${Math.max(0, overlayOpacity - 0.2)}) 100%
-          )`,
+          background: `
+            linear-gradient(
+              105deg,
+              hsl(213 65% 7% / ${overlayOpacity + 0.08}) 0%,
+              hsl(213 62% 10% / ${overlayOpacity}) 40%,
+              hsl(213 58% 14% / ${overlayOpacity - 0.22}) 75%,
+              hsl(213 55% 16% / ${overlayOpacity - 0.40}) 100%
+            )
+          `,
         }}
       />
 
-      {/* Bottom section blend */}
-      <div className="absolute inset-x-0 bottom-0 z-10 h-52 bg-gradient-to-t from-[hsl(40_20%_98%)] to-transparent pointer-events-none" />
+      {/* ── Extra shadow under text area only ── */}
+      <div
+        className="absolute z-10 pointer-events-none"
+        style={{
+          inset: 0,
+          background: `
+            radial-gradient(
+              ellipse 75% 80% at 25% 55%,
+              hsl(213 65% 6% / 0.55) 0%,
+              transparent 70%
+            )
+          `,
+        }}
+      />
 
-      {/* Noise grain */}
+      {/* ── Bottom blend to page background ── */}
+      <div
+        className="absolute inset-x-0 bottom-0 z-10 pointer-events-none"
+        style={{
+          height: "220px",
+          background: "linear-gradient(to top, hsl(40 20% 98%), transparent)",
+        }}
+      />
+
+      {/* ── Subtle noise texture ── */}
       <div
         className="absolute inset-0 z-10 pointer-events-none"
         style={{
-          opacity: 0.028,
+          opacity: 0.025,
           backgroundImage:
             "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
           backgroundSize: "200px 200px",
         }}
       />
 
-      {/* Fine grid */}
+      {/* ── Fine grid ── */}
       <div
         className="absolute inset-0 z-10 pointer-events-none"
         style={{
-          opacity: 0.022,
+          opacity: 0.018,
           backgroundImage:
             "linear-gradient(hsl(0 0% 100%) 1px, transparent 1px), linear-gradient(90deg, hsl(0 0% 100%) 1px, transparent 1px)",
           backgroundSize: "72px 72px",
         }}
       />
 
-      {/* Content */}
+      {/* ── Content ── */}
       <div
-        className="relative z-20 container mx-auto px-6 lg:px-12 xl:px-16 pt-20"
+        className="relative z-20 w-full container mx-auto px-6 lg:px-12 xl:px-16 pt-20"
         style={{
-          opacity: Math.max(0, contentOpacity),
+          opacity: contentOpacity,
           transform: `translateY(${contentY}px)`,
           willChange: "transform, opacity",
         }}
       >
-        <div className="max-w-[700px]">
+        <div className="max-w-[680px]">
 
           {/* Eyebrow */}
-          <div className="hero-eyebrow mb-8 animate-fade-in">
-            <span className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-white/15 bg-white/5 backdrop-blur-md text-white/65 text-xs font-sans font-medium tracking-[0.1em] uppercase">
-              <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--accent))]" style={{ boxShadow: "0 0 6px hsl(20 92% 52% / 0.8)" }} />
+          <div className="hero-eyebrow mb-7">
+            <span
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full text-xs font-semibold tracking-[0.1em] uppercase"
+              style={{
+                border: "1px solid hsl(0 0% 100% / 0.18)",
+                background: "hsl(0 0% 100% / 0.07)",
+                backdropFilter: "blur(8px)",
+                color: "hsl(0 0% 100% / 0.80)",
+              }}
+            >
+              <span
+                className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                style={{
+                  background: "hsl(var(--accent))",
+                  boxShadow: "0 0 7px hsl(20 92% 52% / 0.85)",
+                }}
+              />
               Partner de producción industrial
             </span>
           </div>
 
-          {/* Headline — three lines, staggered */}
-          <h1 className="font-display text-white mb-7 animate-fade-in-up" style={{ lineHeight: 1.05 }}>
-            <span className="block" style={{ fontSize: "clamp(2.4rem, 5.5vw, 4.75rem)" }}>
-              Más que una imprenta:
-            </span>
+          {/* ── Headline — Sora ExtraBold, tight tracking ── */}
+          <h1
+            className="hero-title text-white mb-6 font-extrabold"
+            style={{
+              fontSize: "clamp(2.5rem, 5.8vw, 5rem)",
+              lineHeight: 1.05,
+              letterSpacing: "-0.03em",
+              textShadow: "0 2px 32px hsl(213 65% 6% / 0.7)",
+            }}
+          >
+            Más que una imprenta:{" "}
             <span
-              className="block italic"
               style={{
-                fontSize: "clamp(2.4rem, 5.5vw, 4.75rem)",
                 color: "hsl(var(--accent))",
-                textShadow: "0 0 60px hsl(20 92% 52% / 0.3)",
+                display: "inline-block",
               }}
             >
               tu partner
-            </span>
-            <span className="block" style={{ fontSize: "clamp(2.4rem, 5.5vw, 4.75rem)" }}>
-              de producción.
-            </span>
+            </span>{" "}
+            de producción.
           </h1>
 
           {/* Sub */}
           <p
-            className="text-white/55 font-sans font-light leading-relaxed mb-10 animate-fade-in-delayed"
-            style={{ fontSize: "clamp(1rem, 1.5vw, 1.15rem)", maxWidth: "460px" }}
+            className="hero-sub font-light leading-relaxed mb-9"
+            style={{
+              fontSize: "clamp(1rem, 1.5vw, 1.15rem)",
+              color: "hsl(0 0% 100% / 0.70)",
+              maxWidth: "480px",
+              textShadow: "0 1px 12px hsl(213 65% 6% / 0.5)",
+            }}
           >
             Impresión industrial y packaging personalizado.
             Gestionamos la complejidad para que tú te centres en lo que importa.
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-3 animate-fade-in-delayed-2">
+          <div className="hero-cta flex flex-col sm:flex-row gap-3">
             <Link
               to="/contacto"
-              className="group inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-[hsl(var(--accent))] text-white font-sans font-semibold text-sm tracking-wide transition-all duration-200"
+              className="group inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl font-semibold text-sm tracking-wide text-white transition-all duration-200"
               style={{
-                boxShadow: "0 8px 32px 0 hsl(20 92% 52% / 0.38)",
+                background: "hsl(var(--accent))",
+                boxShadow: "0 8px 32px 0 hsl(20 92% 52% / 0.42)",
+                letterSpacing: "-0.01em",
               }}
               onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.boxShadow = "0 12px 40px 0 hsl(20 92% 52% / 0.55)";
-                (e.currentTarget as HTMLElement).style.background = "hsl(20 92% 45%)";
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = "hsl(20 92% 44%)";
+                el.style.boxShadow = "0 12px 40px 0 hsl(20 92% 52% / 0.56)";
               }}
               onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px 0 hsl(20 92% 52% / 0.38)";
-                (e.currentTarget as HTMLElement).style.background = "hsl(20 92% 52%)";
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = "hsl(var(--accent))";
+                el.style.boxShadow = "0 8px 32px 0 hsl(20 92% 52% / 0.42)";
               }}
             >
               Solicitar presupuesto
-              <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+              <ArrowRight
+                className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5"
+              />
             </Link>
+
             <Link
               to="/retos-soluciones"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-white/18 bg-white/5 backdrop-blur-sm text-white font-sans font-medium text-sm hover:bg-white/10 hover:border-white/32 transition-all duration-200"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-medium text-sm text-white transition-all duration-200"
+              style={{
+                border: "1px solid hsl(0 0% 100% / 0.22)",
+                background: "hsl(0 0% 100% / 0.06)",
+                backdropFilter: "blur(8px)",
+                letterSpacing: "-0.01em",
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = "hsl(0 0% 100% / 0.13)";
+                el.style.borderColor = "hsl(0 0% 100% / 0.36)";
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = "hsl(0 0% 100% / 0.06)";
+                el.style.borderColor = "hsl(0 0% 100% / 0.22)";
+              }}
             >
               Cómo trabajamos
             </Link>
@@ -160,30 +231,72 @@ export function HeroSection() {
 
           {/* Stats */}
           <div
-            className="mt-16 pt-10 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-8 animate-fade-in-delayed-2"
+            className="hero-stats mt-14 pt-9 grid grid-cols-2 md:grid-cols-4 gap-7"
+            style={{ borderTop: "1px solid hsl(0 0% 100% / 0.12)" }}
           >
             {stats.map((s, i) => (
               <div key={i}>
-                <s.icon className="w-4 h-4 text-[hsl(var(--accent))] mb-3" style={{ opacity: 0.75 }} />
-                <div className="font-display text-white leading-none mb-1.5" style={{ fontSize: "clamp(1.5rem, 2.5vw, 2rem)" }}>
+                <s.icon
+                  className="mb-2.5"
+                  style={{
+                    width: 16,
+                    height: 16,
+                    color: "hsl(var(--accent))",
+                    opacity: 0.8,
+                  }}
+                />
+                <div
+                  className="font-bold leading-none mb-1.5"
+                  style={{
+                    fontSize: "clamp(1.4rem, 2.2vw, 1.9rem)",
+                    color: "hsl(0 0% 100%)",
+                    letterSpacing: "-0.03em",
+                  }}
+                >
                   {s.label}
-                  {s.unit && <span className="text-sm text-white/45 ml-0.5">{s.unit}</span>}
+                  {s.unit && (
+                    <span
+                      style={{
+                        fontSize: "0.75em",
+                        color: "hsl(0 0% 100% / 0.45)",
+                        marginLeft: "0.15em",
+                        fontWeight: 400,
+                      }}
+                    >
+                      {s.unit}
+                    </span>
+                  )}
                 </div>
-                <div className="text-white/38 font-sans text-xs tracking-wide">{s.sublabel}</div>
+                <div
+                  className="font-normal text-xs tracking-wide"
+                  style={{ color: "hsl(0 0% 100% / 0.40)" }}
+                >
+                  {s.sublabel}
+                </div>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Scroll hint */}
+      {/* ── Scroll hint ── */}
       <div
         className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 pointer-events-none"
         style={{ opacity: Math.max(0, 1 - progress * 6) }}
         aria-hidden="true"
       >
-        <span className="text-white/28 font-sans text-[10px] uppercase tracking-[0.22em]">Scroll</span>
-        <div className="w-px h-10 bg-gradient-to-b from-white/28 to-transparent" />
+        <span
+          className="text-[10px] uppercase tracking-[0.22em] font-medium"
+          style={{ color: "hsl(0 0% 100% / 0.30)" }}
+        >
+          Scroll
+        </span>
+        <div
+          className="w-px h-9"
+          style={{
+            background: "linear-gradient(to bottom, hsl(0 0% 100% / 0.28), transparent)",
+          }}
+        />
       </div>
     </section>
   );
