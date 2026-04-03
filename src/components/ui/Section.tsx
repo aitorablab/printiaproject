@@ -4,23 +4,24 @@ import { cn } from "@/lib/utils";
 interface SectionProps {
   children: ReactNode;
   className?: string;
-  variant?: "default" | "secondary" | "primary" | "accent";
+  variant?: "default" | "secondary" | "primary" | "accent" | "ivory";
   size?: "sm" | "md" | "lg" | "xl";
   id?: string;
 }
 
-const variantStyles = {
-  default:   "bg-background",
-  secondary: "bg-secondary stripe-pattern",
-  primary:   "bg-primary text-primary-foreground",
-  accent:    "bg-accent text-accent-foreground",
+const variantStyles: Record<string, string> = {
+  default:   "bg-[hsl(var(--background))]",
+  secondary: "bg-[hsl(var(--secondary))]",
+  ivory:     "bg-[hsl(40_20%_97%)]",
+  primary:   "bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]",
+  accent:    "bg-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))]",
 };
 
-const sizeStyles = {
-  sm: "py-14 md:py-20",
-  md: "py-20 md:py-28",
-  lg: "py-24 md:py-36",
-  xl: "py-28 md:py-44",
+const sizeStyles: Record<string, string> = {
+  sm: "py-12 md:py-16",
+  md: "py-16 md:py-24",
+  lg: "py-20 md:py-28",
+  xl: "py-24 md:py-36",
 };
 
 export function Section({
@@ -35,9 +36,7 @@ export function Section({
       id={id}
       className={cn(variantStyles[variant], sizeStyles[size], className)}
     >
-      <div className="container mx-auto px-6 lg:px-8 max-w-7xl">
-        {children}
-      </div>
+      <div className="container mx-auto px-6 lg:px-8">{children}</div>
     </section>
   );
 }
@@ -48,8 +47,6 @@ interface SectionHeaderProps {
   description?: string;
   align?: "left" | "center";
   className?: string;
-  /** Inverse = texto claro sobre fondo oscuro */
-  inverse?: boolean;
 }
 
 export function SectionHeader({
@@ -58,41 +55,36 @@ export function SectionHeader({
   description,
   align = "center",
   className,
-  inverse = false,
 }: SectionHeaderProps) {
   return (
     <div
       className={cn(
-        "mb-14 md:mb-20",
+        "mb-12 md:mb-16",
         align === "center" && "text-center max-w-2xl mx-auto",
         className
       )}
     >
+      {/* Eyebrow */}
       {subtitle && (
-        <span
-          className={cn(
-            "inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] mb-4",
-            inverse ? "text-accent" : "text-accent"
-          )}
-        >
-          <span className="w-6 h-px bg-accent rounded-full" />
-          {subtitle}
-        </span>
+        <div className={cn("mb-3", align === "center" && "flex justify-center")}>
+          <span className="accent-line inline-flex items-center text-[hsl(var(--accent))] font-semibold text-xs uppercase tracking-[0.12em]">
+            {subtitle}
+          </span>
+        </div>
       )}
+
+      {/* Title — Sora Bold, tight */}
       <h2
-        className={cn(
-          "text-3xl md:text-4xl lg:text-[2.75rem] font-display font-bold leading-[1.1] mb-5 text-balance",
-          inverse ? "text-primary-foreground" : "text-foreground"
-        )}
+        className="text-3xl md:text-4xl lg:text-[2.6rem] font-bold mb-4 text-balance"
+        style={{ letterSpacing: "-0.03em", lineHeight: 1.12 }}
       >
         {title}
       </h2>
+
+      {/* Description */}
       {description && (
         <p
-          className={cn(
-            "text-base md:text-lg leading-relaxed",
-            inverse ? "text-primary-foreground/70" : "text-muted-foreground"
-          )}
+          className="text-base md:text-lg text-[hsl(var(--muted-foreground))] leading-relaxed font-light"
         >
           {description}
         </p>
