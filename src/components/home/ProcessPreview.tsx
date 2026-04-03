@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Section, SectionHeader } from "@/components/ui/Section";
 import { ArrowRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const steps = [
   {
@@ -35,26 +36,44 @@ export function ProcessPreview() {
       />
 
       <div className="relative">
-        {/* Connection line */}
-        <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-border -translate-y-1/2" />
+        {/* ── Línea conectora desktop ── */}
+        <div
+          className="hidden lg:block absolute top-7 left-0 right-0 h-px"
+          style={{
+            background:
+              "linear-gradient(to right, transparent 4%, hsl(var(--border)) 4%, hsl(var(--border)) 96%, transparent 96%)",
+          }}
+        />
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {steps.map((step, index) => (
-            <div key={index} className="relative">
-              {/* Step card */}
-              <div className="bg-card rounded-xl p-6 shadow-md border border-border relative z-10 h-full">
-                <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center mb-4">
-                  <span className="text-primary-foreground font-display font-bold text-sm">
-                    {step.number}
-                  </span>
-                </div>
-                <h3 className="font-display font-semibold text-lg mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-muted-foreground text-sm">
-                  {step.description}
-                </p>
+            <div
+              key={index}
+              className={cn(
+                "group relative bg-card rounded-2xl p-6 border border-border",
+                "transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-1 hover:border-accent/20"
+              )}
+            >
+              {/* Número — posicionado en el top como chip */}
+              <div className="relative z-10 w-14 h-14 rounded-2xl bg-primary flex items-center justify-center mb-5 shadow-primary group-hover:bg-accent group-hover:shadow-accent transition-all duration-300">
+                <span className="font-display font-bold text-base text-primary-foreground leading-none">
+                  {step.number}
+                </span>
               </div>
+
+              <h3 className="font-display font-semibold text-base mb-2 group-hover:text-accent transition-colors duration-200">
+                {step.title}
+              </h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                {step.description}
+              </p>
+
+              {/* Flecha entre steps (desktop) */}
+              {index < steps.length - 1 && (
+                <div className="hidden lg:flex absolute -right-3 top-7 w-6 h-6 items-center justify-center z-20 bg-background rounded-full border border-border">
+                  <ArrowRight className="w-3 h-3 text-muted-foreground/60" />
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -63,10 +82,10 @@ export function ProcessPreview() {
       <div className="text-center mt-12">
         <Link
           to="/proceso"
-          className="inline-flex items-center text-accent font-semibold hover:underline"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent/80 transition-colors group"
         >
           Ver proceso completo
-          <ArrowRight className="ml-2 w-4 h-4" />
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
         </Link>
       </div>
     </Section>
