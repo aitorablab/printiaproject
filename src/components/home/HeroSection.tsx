@@ -15,12 +15,12 @@ export function HeroSection() {
   const { ref: sectionRef, progress } = useScrollProgress();
 
   // Overlay: starts at 0.78 so text is always readable
-  const overlayBase = 0.78;
-  const overlayMax  = Math.min(0.96, overlayBase + progress * 0.20);
+  const overlayBase = 0.42;
+  const overlayMax  = Math.min(0.62, overlayBase + progress * 0.10);
 
   // Content fades + rises on scroll
-  const contentOpacity = Math.max(0, 1 - progress * 1.85);
-  const contentY       = progress * 50;
+  const contentOpacity = Math.max(0.88, 1 - progress * 0.35);
+  const contentY       = progress * 24;
 
   return (
     <section
@@ -77,7 +77,7 @@ export function HeroSection() {
           position: "absolute",
           inset: 0,
           zIndex: 11,
-          background: "radial-gradient(ellipse 70% 85% at 22% 52%, hsl(213 65% 5% / 0.60) 0%, transparent 65%)",
+          background: "radial-gradient(ellipse 70% 85% at 22% 52%, hsl(213 65% 5% / 0.22) 0%, transparent 65%)",
           pointerEvents: "none",
         }}
       />
@@ -90,9 +90,9 @@ export function HeroSection() {
           bottom: 0,
           left: 0,
           right: 0,
-          height: "200px",
+          height: "96px",
           zIndex: 12,
-          background: "linear-gradient(to top, hsl(40 20% 98%), transparent)",
+          background: "linear-gradient(to top, hsl(40 20% 98% / 0.9), transparent)",
           pointerEvents: "none",
         }}
       />
