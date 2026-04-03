@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Section, SectionHeader } from "@/components/ui/Section";
 import { Factory, Megaphone, Package, ShoppingBag, ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useScrollReveal } from "@/hooks/useScrollEffects";
 
 const sectors = [
   {
@@ -9,98 +9,81 @@ const sectors = [
     title: "Empresas industriales",
     description: "Documentación técnica, etiquetado y packaging industrial.",
     href: "/sectores#industrial",
-    color: "group-hover:text-blue-600",
-    bg: "group-hover:bg-blue-50",
   },
   {
     icon: Megaphone,
     title: "Marketing y comunicación",
     description: "Materiales promocionales, PLV y campañas multicanal.",
     href: "/sectores#marketing",
-    color: "group-hover:text-orange-500",
-    bg: "group-hover:bg-orange-50",
   },
   {
     icon: Package,
     title: "Packaging y producto",
     description: "Embalajes, cajas y presentación de producto a medida.",
     href: "/sectores#packaging",
-    color: "group-hover:text-blue-600",
-    bg: "group-hover:bg-blue-50",
   },
   {
     icon: ShoppingBag,
     title: "Retail y marcas",
     description: "Señalética, displays y comunicación en punto de venta.",
     href: "/sectores#retail",
-    color: "group-hover:text-orange-500",
-    bg: "group-hover:bg-orange-50",
   },
 ];
 
 export function SectorsPreview() {
-  return (
-    <Section variant="secondary" size="lg">
-      <SectionHeader
-        subtitle="Sectores"
-        title="Expertos en tu industria"
-        description="Conocemos las necesidades específicas de cada sector. Hablamos tu idioma."
-      />
+  const headerRef = useScrollReveal(0.1);
+  const gridRef = useScrollReveal(0.05);
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {sectors.map((sector, index) => (
+  return (
+    <Section variant="default" size="lg">
+      <div ref={headerRef as React.RefObject<HTMLDivElement>} className="reveal-container">
+        <div data-reveal-child>
+          <SectionHeader
+            subtitle="Sectores"
+            title="Expertos en tu industria"
+            description="Conocemos las necesidades específicas de cada sector. Hablamos tu idioma."
+            italic
+          />
+        </div>
+      </div>
+
+      <div
+        ref={gridRef as React.RefObject<HTMLDivElement>}
+        className="reveal-container grid sm:grid-cols-2 lg:grid-cols-4 gap-4"
+      >
+        {sectors.map((sector, i) => (
           <Link
-            key={index}
+            key={i}
             to={sector.href}
-            className={cn(
-              "group bg-card rounded-2xl p-6 border border-border text-center",
-              "transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-1 hover:border-accent/20"
-            )}
+            data-reveal-child
+            className="sector-card group flex flex-col items-center text-center p-7 rounded-2xl bg-[hsl(var(--card))] border border-[hsl(var(--border))]"
           >
-            {/* Icon container */}
             <div
-              className={cn(
-                "w-14 h-14 rounded-2xl bg-primary/8 flex items-center justify-center mx-auto mb-4",
-                "transition-all duration-300",
-                sector.bg
-              )}
+              className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-colors duration-220"
+              style={{ background: "hsl(var(--secondary))" }}
             >
               <sector.icon
-                className={cn(
-                  "w-6 h-6 text-primary transition-colors duration-300",
-                  sector.color
-                )}
+                className="transition-colors duration-220"
+                style={{ width: 24, height: 24, color: "hsl(var(--primary))" }}
               />
             </div>
-
-            <h3
-              className={cn(
-                "font-display font-semibold text-sm mb-2 transition-colors duration-200",
-                "group-hover:text-accent"
-              )}
-            >
+            <h3 className="font-display text-base mb-2 text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">
               {sector.title}
             </h3>
-            <p className="text-muted-foreground text-xs leading-relaxed mb-4">
+            <p className="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed font-sans">
               {sector.description}
             </p>
-
-            {/* Arrow */}
-            <span className="inline-flex items-center gap-1 text-xs font-medium text-accent/0 group-hover:text-accent transition-all duration-200">
-              Ver más
-              <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-            </span>
           </Link>
         ))}
       </div>
 
-      <div className="text-center mt-12">
+      <div className="text-center mt-10">
         <Link
           to="/sectores"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent/80 transition-colors group"
+          className="inline-flex items-center gap-2 text-sm font-sans font-semibold text-[hsl(var(--accent))] hover:text-[hsl(20_92%_40%)] transition-colors group"
         >
           Ver todos los sectores
-          <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
         </Link>
       </div>
     </Section>
