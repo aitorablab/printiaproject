@@ -30,7 +30,7 @@ Estructura de la web
 
 Menú principal: Inicio · Retos y soluciones · Servicios · Cómo trabajamos · Sectores · Sobre PrintIA · Contacto
 
-Home – Propuesta de valor clara
+1. Home – Propuesta de valor clara
 Objetivo: que en 5 segundos se entienda qué hace PrintIA y por qué es diferente.
 
 Secciones:
@@ -71,7 +71,7 @@ Control de principio a fin
 
 CTA intermedio visible
 
-Retos y soluciones
+2. Retos y soluciones
 Introducción: “Entendemos los retos de la impresión B2B”
 
 Bloques:
@@ -86,7 +86,7 @@ Coordinación interna → Acompañamiento continuo
 
 Cierre: PrintIA como partner operativo
 
-Servicios y capacidades
+3. Servicios y capacidades
 Bloques:
 
 Impresión comercial
@@ -107,7 +107,7 @@ Tipo de cliente ideal
 
 Evitar listados fríos. Enfocar a valor.
 
-Cómo trabajamos – Proceso PrintIA
+4. Cómo trabajamos – Proceso PrintIA
 Flujo visual paso a paso:
 
 Contacto y entendimiento
@@ -126,7 +126,7 @@ Facturación y postventa
 
 Mensaje: acompañamiento de principio a fin
 
-Sectores / Tipos de cliente
+5. Sectores / Tipos de cliente
 Ejemplos:
 
 Empresas industriales
@@ -143,7 +143,7 @@ Necesidades habituales
 
 Cómo ayuda PrintIA
 
-Sobre PrintIA
+6. Sobre PrintIA
 Quiénes somos
 
 Experiencia industrial
@@ -154,7 +154,7 @@ Compromiso con calidad y plazos
 
 Tono humano, profesional y cercano. No mencionar IA si no aporta valor al cliente final.
 
-Contacto / Presupuesto
+7. Contacto / Presupuesto
 Mensaje directo: “Hablemos de tu proyecto”
 
 Formulario sencillo
